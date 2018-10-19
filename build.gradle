@@ -1,22 +1,64 @@
 buildscript {
-  repositories {
-    mavenCentral()
-  }
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven { url "https://maven.google.com" }
+        maven { url 'https://jitpack.io' }
+    }
 
-  dependencies {
-    classpath 'com.android.tools.build:gradle:0.5.+'
-  }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.3'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    }
 }
 
-allprojects {
-  group = 'com.actionbarsherlock'
-  version = '4.4.0'
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-  repositories {
+group='com.github.Campanari'
+
+repositories {
+    jcenter()
     mavenCentral()
-  }
+    maven { url "https://maven.google.com" }
+    maven { url 'https://jitpack.io' }
+}
 
-  tasks.withType(Compile) {
-    options.encoding = "UTF-8"
-  }
+dependencies {
+    compile 'com.android.support:support-v4:28.0.0'
+    compile 'com.android.support:support-annotations:28.0.0'
+}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        // Move the tests to tests/java, tests/res, etc...
+        androidTest.setRoot('tests')
+
+        // Move the build types to build-types/<type>
+        // For instance, build-types/debug/java, build-types/debug/AndroidManifest.xml, ...
+        // This moves them out of them default location under src/<type>/... which would
+        // conflict with src/ being used by the main source set.
+        // Adding new build types or product flavors should be accompanied
+        // by a similar customization.
+        debug.setRoot('build-types/debug')
+        release.setRoot('build-types/release')
+    }
 }
